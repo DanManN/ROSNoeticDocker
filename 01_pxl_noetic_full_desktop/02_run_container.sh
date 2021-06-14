@@ -8,6 +8,11 @@ fi
 
 vendor=`glxinfo | grep vendor | grep OpenGL | awk '{ print $4 }'`
 
+# Extract current authentication cookie
+AUTH_COOKIE=$(xauth list $DISPLAY | awk '{print $3}')
+
+# Create the new X Authority file
+xauth -nf Xauthority add noetic_desktop/unix$DISPLAY MIT-MAGIC-COOKIE-1 $AUTH_COOKIE
 
 if [ $vendor == "NVIDIA" ]; then
     docker run -it --rm \
@@ -20,9 +25,8 @@ if [ $vendor == "NVIDIA" ]; then
         -v `pwd`/../Commands/bin:/home/user/bin \
         -v `pwd`/../ExampleCode:/home/user/ExampleCode \
         -v `pwd`/../Projects/catkin_ws_src:/home/user/Projects/catkin_ws/src \
-	-v `pwd`/../Data:/home/user/Data \
-        -env="XAUTHORITY=$XAUTH" \
-        --volume="$XAUTH:$XAUTH" \
+        -v `pwd`/../Data:/home/user/Data \
+        --volume="`pwd`/Xauthority:/home/user/.Xauthority" \
         --gpus all \
         pxl_noetic_full_desktop:latest \
         bash
@@ -34,7 +38,7 @@ else
         -v `pwd`/../Commands/bin:/home/user/bin \
         -v `pwd`/../ExampleCode:/home/user/ExampleCode \
         -v `pwd`/../Projects/catkin_ws_src:/home/user/Projects/catkin_ws/src \
-	-v `pwd`/../Data:/home/user/Data \
+        -v `pwd`/../Data:/home/user/Data \
         --device=/dev/dri:/dev/dri \
         --env="DISPLAY=$DISPLAY" \
         -e "TERM=xterm-256color" \
