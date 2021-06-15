@@ -1,0 +1,24 @@
+#!/bin/bash
+if $(tmux has-session 2>/dev/null); then tmux -2u att; exit; fi
+tmux new-session -d -n inits -s gazebo_sim -c /home/user/Projects/planning_baxter
+sleep 0.2
+tmux send-keys -t gazebo_sim:0.0 "source source_me" Enter "roslaunch baxter_moveit execution.launch"
+tmux select-layout -t gazebo_sim:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux split-window -t gazebo_sim:0 -c /home/user/Projects/planning_baxter
+sleep 0.2
+tmux send-keys -t gazebo_sim:0.1 "source source_me" Enter "roslaunch baxter_moveit enable.launch"
+tmux select-layout -t gazebo_sim:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux split-window -t gazebo_sim:0 -c /home/user/Projects/planning_baxter
+sleep 0.2
+tmux send-keys -t gazebo_sim:0.2 "source source_me" Enter "roslaunch baxter_moveit planning_real.launch"
+tmux select-layout -t gazebo_sim:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux split-window -t gazebo_sim:0 -c /home/user/Projects/planning_baxter
+sleep 0.2
+tmux send-keys -t gazebo_sim:0.3 "source source_me" Enter "rosrun planit gazeboPerception.py -c"
+tmux select-layout -t gazebo_sim:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux new-window -n bash -t gazebo_sim:1 -c /home/user/Projects/planning_baxter
+sleep 0.2
+# tmux send-keys -t gazebo_sim:1.0 "echo /bin/bash ./tmux-save-session.sh" Enter
+tmux send-keys -t gazebo_sim:1.0 "source source_me" Enter
+tmux select-layout -t gazebo_sim:1 "c745,191x18,0,0,8" > /dev/null
+tmux -2u att

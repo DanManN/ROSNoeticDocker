@@ -6,6 +6,8 @@ then
     exit
 fi
 
+mkdir -p ../Projects
+
 vendor=`glxinfo | grep vendor | grep OpenGL | awk '{ print $4 }'`
 
 # Extract current authentication cookie
@@ -24,7 +26,7 @@ if [ $vendor == "NVIDIA" ]; then
         --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
         -v `pwd`/../Commands/bin:/home/user/bin \
         -v `pwd`/../ExampleCode:/home/user/ExampleCode \
-        -v `pwd`/../Projects/catkin_ws_src:/home/user/Projects/catkin_ws/src \
+        -v `pwd`/../Projects:/home/user/Projects \
         -v `pwd`/../Data:/home/user/Data \
         --volume="`pwd`/Xauthority:/home/user/.Xauthority" \
         --gpus all \
