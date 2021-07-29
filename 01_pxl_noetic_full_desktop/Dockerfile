@@ -23,12 +23,14 @@ RUN set -x \
         && apt-get install -y mesa-utils qt4-default libspnav0 \
         && apt-get install -y iputils-ping \
         && apt-get install -y apt-transport-https ca-certificates \
-        && apt-get install -y openssh-server python3-pip ipython3 exuberant-ctags \
+        && apt-get install -y openssh-server exuberant-ctags \
         && apt-get install -y git vim tmux nano htop sudo curl wget gnupg2 \
         && apt-get install -y bash-completion \
         && apt-get install -y libcanberra-gtk3-0 \
         && apt-get install -y ros-noetic-gmapping ros-noetic-slam-gmapping ros-noetic-openslam-gmapping \
         && apt-get install -y ros-noetic-effort-controllers ros-noetic-moveit ros-noetic-ompl ros-noetic-moveit-visual-tools ros-noetic-rosparam-shortcuts \
+        && apt-get install -y ros-noetic-socketcan-interface ros-noetic-soem ros-robot-state-publisher \
+        && apt-get install -y python3-empy python3-collada python-is-python3 python3-pip ipython3 python3-numpy python3-scipy \
         && pip3 install powerline-shell  \
         && rm -rf /var/lib/apt/lists/* \
         && useradd -ms /bin/bash user \
@@ -36,8 +38,10 @@ RUN set -x \
         && echo "user ALL=(ALL) NOPASSWD: ALL " >> /etc/sudoers
 
 # The OSRF contianer didn't link python3 to python, causing ROS scripts to fail.
-RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN ln -s /usr/bin/ipython3 /usr/bin/ipython
+
+# install tools not in apt
+RUN pip install trimesh
 
 USER user
 WORKDIR /home/user
