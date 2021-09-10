@@ -30,7 +30,7 @@ RUN set -x \
         && apt-get install -y ros-noetic-gmapping ros-noetic-slam-gmapping ros-noetic-openslam-gmapping \
         && apt-get install -y ros-noetic-effort-controllers ros-noetic-moveit ros-noetic-ompl ros-noetic-moveit-visual-tools ros-noetic-rosparam-shortcuts \
         && apt-get install -y ros-noetic-socketcan-interface ros-noetic-soem ros-robot-state-publisher \
-        && apt-get install -y python3-empy python3-collada python-is-python3 python3-pip ipython3 python3-numpy python3-scipy \
+        && apt-get install -y python3-empy python3-collada python-is-python3 python3-pip ipython3 python3-numpy python3-scipy python3-networkx \
         && pip3 install powerline-shell  \
         && rm -rf /var/lib/apt/lists/* \
         && useradd -ms /bin/bash user \

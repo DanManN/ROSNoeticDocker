@@ -1,6 +1,6 @@
 #!/bin/bash
 
 cd Projects/planning_baxter
-mkdir ~/.gazebo
+mkdir -p ~/.gazebo
 cp -r models ~/.gazebo/
 session_tmux
