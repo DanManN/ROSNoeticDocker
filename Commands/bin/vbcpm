@@ -3,7 +3,7 @@
 if $(tmux has-session 2>/dev/null); then tmux -2u att; exit; fi
 tmux new-session -d -n scripts -s vbcpm -c /home/user/Projects/vbcpm/src/pracsys-vbcpm/nlp_task_specification/scripts
 sleep 0.2
-tmux send-keys -t vbcpm:0.0 "source ../../../../devel/setup.sh" Enter "roslaunch baxter_moveit planning_sim.launch"
+tmux send-keys -t vbcpm:0.0 "source ../../../../devel/setup.sh" Enter "roslaunch baxter_moveit planning_sim.launch planner:=ompl-chomp"
 tmux select-layout -t vbcpm:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
 tmux split-window -t vbcpm:0 -c /home/user/Projects/vbcpm/src/pracsys-vbcpm/nlp_task_specification/scripts
 sleep 0.2
