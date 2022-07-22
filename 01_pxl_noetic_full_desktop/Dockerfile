@@ -21,16 +21,21 @@ RUN set -x \
         && apt-get install -y software-properties-common \
         && add-apt-repository ppa:rock-core/qt4 \
         && apt-get install -y mesa-utils qt4-default libspnav0 \
-        && apt-get install -y iputils-ping \
-        && apt-get install -y apt-transport-https ca-certificates \
-        && apt-get install -y openssh-server exuberant-ctags \
-        && apt-get install -y git vim tmux nano htop sudo curl wget gnupg2 \
-        && apt-get install -y bash-completion \
-        && apt-get install -y libcanberra-gtk3-0 \
-        && apt-get install -y ros-noetic-gmapping ros-noetic-slam-gmapping ros-noetic-openslam-gmapping \
-        && apt-get install -y ros-noetic-effort-controllers ros-noetic-moveit ros-noetic-ompl ros-noetic-moveit-visual-tools ros-noetic-rosparam-shortcuts \
-        && apt-get install -y ros-noetic-socketcan-interface ros-noetic-soem ros-robot-state-publisher \
-        && apt-get install -y python3-empy python3-collada python-is-python3 python3-pip ipython3 python3-numpy python3-scipy python3-networkx python3-tk \
+                git vim tmux nano htop sudo curl wget gnupg2 \
+                iputils-ping \
+                apt-transport-https \
+                ca-certificates \
+                openssh-server \
+                exuberant-ctags \
+                bash-completion \
+                libcanberra-gtk3-0 \
+                graphviz graphviz-dev \
+                ros-noetic-gmapping ros-noetic-slam-gmapping ros-noetic-openslam-gmapping \
+                ros-noetic-socketcan-interface ros-noetic-soem ros-robot-state-publisher \
+                ros-noetic-effort-controllers ros-noetic-moveit ros-noetic-ompl \
+                ros-noetic-moveit-visual-tools ros-noetic-rosparam-shortcuts \
+                python3-empy python3-collada python-is-python3 python3-pip ipython3 \
+                python3-networkx python3-tk \
         && rm -rf /var/lib/apt/lists/* \
         && useradd -ms /bin/bash user \
         && echo "user:user" | chpasswd && adduser user sudo \
@@ -40,20 +45,24 @@ RUN set -x \
 RUN ln -s /usr/bin/ipython3 /usr/bin/ipython
 
 # install tools not in apt
-RUN pip3 install -U open3d
-RUN pip3 install -U opencv_python
-RUN pip3 install -U pybullet
-RUN pip3 install -U pandas
-RUN pip3 install -U scipy
-RUN pip3 install -U numpy
-RUN pip3 install -U trimesh
-RUN pip3 install -U colorcet
-RUN pip3 install -U seaborn
-RUN pip3 install -U tqdm
-RUN pip3 install -U rospkg
-RUN pip3 install -U transformations
 RUN pip3 install -U powerline-shell
-RUN pip3 install -U scikit_image
+RUN pip3 install numpy
+RUN pip3 install scipy
+RUN pip3 install colorcet
+RUN pip3 install seaborn
+RUN pip3 install tqdm
+RUN pip3 install pandas
+RUN pip3 install scikit_image
+RUN pip3 install pygraphviz
+RUN pip3 install open3d
+RUN pip3 install trimesh
+RUN pip3 install opencv_python
+RUN pip3 install pybullet
+RUN pip3 install rospkg
+RUN pip3 install urdfpy
+RUN pip3 install transformations
+RUN pip3 install objgraph
+RUN pip3 install memory_profiler
 
 USER user
 WORKDIR /home/user
@@ -65,10 +74,10 @@ RUN git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack  \
 COPY --chown=user:user ./.tmux.conf /home/user/.tmux.conf
 COPY --chown=user:user ./.powerline.sh /home/user/.powerline.sh
 
+COPY --chown=user:user ./.vim /home/user/.vim
+COPY --chown=user:user ./.vimrc /home/user/.vimrc
 RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-COPY --chown=user:user ./.vimrc /home/user/.vimrc
  
 RUN set -x \
         && vim -E -u NONE -S /home/user/.vimrc -C "+PlugInstall" -C "+qall";  exit 0

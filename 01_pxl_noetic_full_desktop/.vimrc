@@ -32,16 +32,20 @@ if !has('nvim')
 	call <SID>MapFastKeycode('<M-Q>','Q')
 else
 	set runtimepath^=$HOME/.vim
+	set runtimepath^=$HOME/.vim/after
 endif
 
 let mapleader = ' '
 let mapreturn = ''
 let g:indentLine_char = '¦'
-if filereadable(expand('$HOME/.vim/plugins.vim'))
+if (filereadable(expand('$HOME/.vim/plugins.vim')) && !exists('g:vscode'))
 	source ~/.vim/plugins.vim
-else
-	colorscheme evening
 endif
+
+augroup ensure_color
+	autocmd!
+	autocmd VimEnter * colorscheme tender
+augroup END
 
 "--- Basic Settings ---"
 if (has('termguicolors'))
@@ -65,7 +69,9 @@ set backspace=indent,eol,start
 " search and highlighting
 set smartcase
 set ignorecase
-set hlsearch
+if !exists('g:vscode')
+	set hlsearch
+endif
 if has('reltime')
 	set incsearch
 endif
@@ -90,6 +96,9 @@ noremap! <M-q> <Esc>
 noremap <F12> <Esc>
 noremap! <F12> <Esc>
 
+" upon visual put re-yank the put selection
+vnoremap p pgvy
+
 " smart line numbers
 set number relativenumber
 augroup numbertoggle
@@ -99,12 +108,23 @@ augroup numbertoggle
 augroup END
 
 "--- Typos ---"
-command! WQ wq
-command! Wq wq
-command! Qw wq
-command! QW wq
-command! W w
-command! Q q
+if !exists('g:vscode')
+	command! WQ wq
+	command! Wq wq
+	command! Qw wq
+	command! QW wq
+	command! W w
+	command! Q q
+else
+	cmap WQ wq
+	cmap Wq wq
+	cmap wQ wq
+	cmap Qw wq
+	cmap qW wq
+	cmap QW wq
+	cmap W w
+	cmap Q q
+endif
 
 "--- Symbols ---"
 inoremap ?! ‽
@@ -113,10 +133,10 @@ inoremap ?<= ≤
 inoremap ?>= ≥
 inoremap ?in ∈
 inoremap ?ni ∋
-inoremap ?so ⊆
-inoremap ?sf ⊇
-inoremap ?po ⊂
-inoremap ?pf ⊃
+inoremap ?sb ⊆
+inoremap ?sp ⊇
+inoremap ?pb ⊂
+inoremap ?pp ⊃
 
 "--- File Extensions ---"
 augroup fileextensions
@@ -280,3 +300,9 @@ augroup starsurf
 	autocmd!
 	autocmd FileType html nnoremap <buffer> <leader>h :call SurfJob()<Cr>
 augroup END
+
+"--- Extra vscode settings ---"
+if exists('g:vscode')
+	nnoremap gcc :call VSCodeCall('editor.action.commentLine')<Cr>
+	vnoremap gcc <Plug>VSCodeCommentary
+endif
