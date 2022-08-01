@@ -34,6 +34,7 @@ RUN set -x \
                 ros-noetic-socketcan-interface ros-noetic-soem ros-robot-state-publisher \
                 ros-noetic-effort-controllers ros-noetic-moveit ros-noetic-ompl \
                 ros-noetic-moveit-visual-tools ros-noetic-rosparam-shortcuts \
+                ros-noetic-moveit-resources-prbt-moveit-config \
                 python3-empy python3-collada python-is-python3 python3-pip ipython3 \
                 python3-networkx python3-tk \
         && rm -rf /var/lib/apt/lists/* \
@@ -59,10 +60,11 @@ RUN pip3 install trimesh
 RUN pip3 install opencv_python
 RUN pip3 install pybullet
 RUN pip3 install rospkg
-RUN pip3 install urdfpy
 RUN pip3 install transformations
 RUN pip3 install objgraph
 RUN pip3 install memory_profiler
+# RUN pip3 install urdfpy
+RUN pip3 install https://github.com/MiaoDragon/urdfpy/archive/refs/heads/master.zip
 
 USER user
 WORKDIR /home/user
