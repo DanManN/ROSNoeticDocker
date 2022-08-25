@@ -39,8 +39,9 @@ else
         --volume=/tmp/.X11-unix:/tmp/.X11-unix \
         -v `pwd`/../Commands/bin:/home/user/bin \
         -v `pwd`/../ExampleCode:/home/user/ExampleCode \
-        -v `pwd`/../Projects/catkin_ws_src:/home/user/Projects/catkin_ws/src \
+        -v `pwd`/../Projects:/home/user/Projects \
         -v `pwd`/../Data:/home/user/Data \
+        --volume="`pwd`/Xauthority:/home/user/.Xauthority" \
         --device=/dev/dri:/dev/dri \
         --env="DISPLAY=$DISPLAY" \
         -e "TERM=xterm-256color" \
