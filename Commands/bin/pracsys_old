@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if $(tmux has-session 2>/dev/null); then tmux -2u att; exit; fi
+tmux new-session -d -n scripts -s vbcpm -c /home/user/Projects/pracsys_ws/src/pracsys_vision_tamp_manipulation
+sleep 0.2
+tmux send-keys -t vbcpm:0.0 "source ../../devel/setup.sh" Enter "python ./scripts/execution_scene/sim_scene.py 1 test y"
+tmux select-layout -t vbcpm:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux split-window -t vbcpm:0 -c /home/user/Projects/pracsys_ws/src/pracsys_vision_tamp_manipulation
+sleep 0.2
+tmux send-keys -t vbcpm:0.1 "source ../../devel/setup.sh" Enter "python ./scripts/task_planner/task_planner_retrieval.py test"
+tmux select-layout -t vbcpm:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux split-window -t vbcpm:0 -c /home/user/Projects/pracsys_ws/src/pracsys_vision_tamp_manipulation
+sleep 0.2
+tmux send-keys -t vbcpm:0.2 "source ../../devel/setup.sh" Enter "roslaunch motoman_moveit_config moveit_rviz.launch"
+tmux select-layout -t vbcpm:0 "0b6f,191x18,0,0[191x4,0,0,4,191x4,0,5,5,191x4,0,10,2,191x3,0,15,6]" > /dev/null
+tmux new-window -n bash -t vbcpm:1 -c /home/user/Projects/pracsys_ws/src/pracsys_vision_tamp_manipulation
+sleep 0.2
+tmux send-keys -t vbcpm:1.0 "source ../../devel/setup.sh" Enter "roslaunch motoman_moveit_config move_group.launch"
+tmux select-window -t vbcpm:0
+tmux -2u att

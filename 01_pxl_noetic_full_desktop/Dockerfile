@@ -34,9 +34,9 @@ RUN set -x \
                 ros-noetic-socketcan-interface ros-noetic-soem ros-robot-state-publisher \
                 ros-noetic-effort-controllers ros-noetic-moveit ros-noetic-ompl \
                 ros-noetic-moveit-visual-tools ros-noetic-rosparam-shortcuts \
-                ros-noetic-moveit-resources-prbt-moveit-config \
+                ros-noetic-moveit-resources-prbt-moveit-config ros-noetic-ros-numpy \
                 python3-empy python3-collada python-is-python3 python3-pip ipython3 \
-                python3-networkx python3-tk \
+                python3-tk \
         && rm -rf /var/lib/apt/lists/* \
         && useradd -ms /bin/bash user \
         && echo "user:user" | chpasswd && adduser user sudo \
@@ -56,19 +56,47 @@ RUN pip3 install pandas
 RUN pip3 install scikit_image
 RUN pip3 install pygraphviz
 RUN pip3 install open3d
-RUN pip3 install trimesh
 RUN pip3 install opencv_python
 RUN pip3 install pybullet
 RUN pip3 install rospkg
 RUN pip3 install transformations
 RUN pip3 install objgraph
 RUN pip3 install memory_profiler
+RUN pip3 install scikit-guess
+RUN pip3 install rtree
+RUN pip3 install pydot
+RUN pip3 install -U networkx
+RUN pip3 install empy
+RUN pip3 install glfw
+RUN pip3 install scipy
+RUN pip3 install open3d
+RUN pip3 install toppra
+RUN pip3 install trimesh
+RUN pip3 install seaborn
+RUN pip3 install colorcet
+RUN pip3 install pygraphviz
+RUN pip3 install pyransac3d
+RUN pip3 install transformations
+RUN pip3 install mujoco
+RUN pip3 install dm_control
+RUN pip3 install mujoco-python-viewer
 # RUN pip3 install urdfpy
 RUN pip3 install https://github.com/MiaoDragon/urdfpy/archive/refs/heads/master.zip
+RUN pip3 install git+https://github.com/DanManN/mesh2sdf
+
+
 
 USER user
 WORKDIR /home/user
 RUN sudo usermod -a -G video user
+
+RUN git clone https://github.com/atenpas/gpd \
+        && cd gpd \
+        && mkdir build \
+        && cd build \
+        && cmake .. \
+        && make -j 8 \
+        && sudo make install
 
 RUN git clone https://github.com/jimeh/tmux-themepack.git ~/.tmux-themepack  \
         && git clone https://github.com/tmux-plugins/tmux-resurrect ~/.tmux-resurrect \
